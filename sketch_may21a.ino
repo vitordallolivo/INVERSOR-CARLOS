@@ -1,7 +1,21 @@
-// THEMOSISTOR
-#include <Thermistor.h>
+#include <SoftwareSerial.h>
 
-Thermistor temp(0);
+
+
+#include <thermistor.h>
+
+// THEMOSISTOR
+
+#define NTC A1
+
+// Thermistor object
+THERMISTOR thermistor(NTC,            // pino analogico
+                      10000,          // resistencia a 25 ºC
+                      3950,           // thermistor's beta coeficiente,
+                      1000);         // Value of the series resistor
+
+uint16_t temp; 
+
  // LEMBRAR DE USAR BIBLIOTECA DO THEMISTOR
 
 
@@ -45,23 +59,27 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-      while (digitalRead(botao)== 1) {
+  
+     
+      while (digitalRead(botao)== 1) 
+      {
 
               liga=1;
         
         }
-      while(liga == 1){  
+      while(liga == 1)
+      {  
         
               digitalWrite(aquecimento,HIGH); // aqueciment liga 
               digitalWrite(DI1,HIGH); // /RPM de 300 começa
 
 
       
-              int temperature = temp.getTemp();  
+              temp = thermistor.read();   // Read temperature
               
               
-              while(botao == 1) {   
+              while(botao == 1) 
+              {   
                 
                 
                       liga=0;  // DESLIGA TUDO
@@ -71,9 +89,48 @@ void loop() {
 
 
               
-              if (temperature>= 50 && temperature<75){Serial.println("ta bom");} 
+              if (temp>= 50 && temp<75)
+              {
+                
+                
+                      digitalWrite(DI2,HIGH);
+           
+                
+              } // 50ºC a 75ºC
 
-              
+              else
+              {
+                      digitalWrite(DI2,LOW);
+                      if(temp>=75  && temp<100)
+                      {
+                        
+                        
+                          digitalWrite(DI3,HIGH);
+                        
+                        
+                        }
+                        
+                       digitalWrite(DI3,LOW);
+
+                        
+                       if(temp>100){
+
+
+                         digitalWrite(DI2,HIGH);
+                         digitalWrite(DI3,HIGH);
+                         delay(15000);
+                         digitalWrite(DI2,LOW);
+                         digitalWrite(DI3,LOW);
+                         liga=0;
+
+                            
+                        } // 100ºC
+                        
+                } // else
+                
+                
+                
+       } // liga
               
                 
         
@@ -83,6 +140,5 @@ void loop() {
         
         
         
-        }
+} // Tudo dentro disso
         
-}
