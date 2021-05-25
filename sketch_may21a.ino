@@ -1,23 +1,10 @@
 #include <SoftwareSerial.h>
 
-
-
-#include <thermistor.h>
-
 // THEMOSISTOR
 
-#define NTC A1
+#define NTC A15
 
-// Thermistor object
-THERMISTOR thermistor(NTC,            // pino analogico
-                      10000,          // resistencia a 25 ºC
-                      3950,           // thermistor's beta coeficiente,
-                      1000);         // Value of the series resistor
-
-uint16_t temp; 
-
- // LEMBRAR DE USAR BIBLIOTECA DO THEMISTOR
-
+int temp;
 
 
 // botão de inicio e parada
@@ -47,11 +34,11 @@ int liga=0;
 void setup() {
   // put your setup code here, to run once:
       
-     Serial.begin(9600);
+     Serial.begin(300);
       
       
       pinMode(botao,INPUT);
-      
+      pinMode(NTC,INPUT); // input analogico
       pinMode(aquecimento,OUTPUT);
       pinMode(DI1,OUTPUT);
       pinMode(DI2,OUTPUT);
@@ -59,9 +46,11 @@ void setup() {
 }
 
 void loop() {
-  
-     
-      while (digitalRead(botao)== 1) 
+
+      temp=analogRead(NTC) ;
+      Serial.println(temp);
+      
+      /*while (digitalRead(botao)== 1) 
       {
 
               liga=1;
@@ -73,9 +62,7 @@ void loop() {
               digitalWrite(aquecimento,HIGH); // aqueciment liga 
               digitalWrite(DI1,HIGH); // /RPM de 300 começa
 
-
-      
-              temp = thermistor.read();   // Read temperature
+              
               
               
               while(botao == 1) 
@@ -136,7 +123,7 @@ void loop() {
         
         
         
-        
+        */
         
         
         
