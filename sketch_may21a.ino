@@ -1,8 +1,8 @@
-#include <SoftwareSerial.h>
+
 
 // THEMOSISTOR
 
-#define NTC A15
+#define NTC A0
 
 int temp;
 
@@ -16,15 +16,15 @@ int temp;
 
 
 //Relé que manda o DI1, LIGA GERAL 
-#define DI1 24// 300 RPM
+#define DI1 52// 300 RPM
 
 //Relé DI2
-#define DI2 26 //800 RPM
+#define DI2  48//800 RPM
 
 //Relé DI3
-#define DI3 28 // 1500 RPM
+#define DI3 38 // 1500 RPM
 
-int liga=0;
+int liga;
 /*
    ///////////////   DI2*DI3 = 2100 RPM /////////////
 */
@@ -34,7 +34,7 @@ int liga=0;
 void setup() {
   // put your setup code here, to run once:
       
-     Serial.begin(300);
+     Serial.begin(19200);
       
       
       pinMode(botao,INPUT);
@@ -48,74 +48,105 @@ void setup() {
 void loop() {
 
       temp=analogRead(NTC) ;
+      digitalWrite(aquecimento,LOW);
+      digitalWrite(DI1,LOW);
+      digitalWrite(DI2,LOW);
+      digitalWrite(DI3,LOW);
       Serial.println(temp);
       
-      /*while (digitalRead(botao)== 1) 
+      
+      while (digitalRead(botao) == HIGH ) 
       {
 
               liga=1;
+              Serial.println("liga");
         
         }
+       
+      
+      
       while(liga == 1)
       {  
-        
+              Serial.println("liga");
               digitalWrite(aquecimento,HIGH); // aqueciment liga 
               digitalWrite(DI1,HIGH); // /RPM de 300 começa
 
+              temp=analogRead(NTC) ;
+              Serial.println(temp);
               
               
               
-              while(botao == 1) 
-              {   
-                
-                
-                      liga=0;  // DESLIGA TUDO
-                
-                }
 
 
 
               
-              if (temp>= 50 && temp<75)
+              while (temp>=154  && temp<175)
               {
-                
-                
+                      Serial.println(temp);
+                      digitalWrite(aquecimento,HIGH); 
                       digitalWrite(DI2,HIGH);
-           
+                      Serial.println("estágio dos 50");
+                      temp=analogRead(NTC) ;
+                      Serial.println(temp);
+                       while (digitalRead (botao) == HIGH) 
+                       {   
+                
+                
+                              liga=0;  // DESLIGA TUDO
+                              Serial.println("desliga");
+                              
+                        }
                 
               } // 50ºC a 75ºC
 
-              else
-              {
-                      digitalWrite(DI2,LOW);
-                      if(temp>=75  && temp<100)
-                      {
+               digitalWrite(DI2,LOW);
+              
+                while (temp>=175  && temp<219)
+               {
+                   digitalWrite(aquecimento,HIGH);  
+                   Serial.println(temp);
+                   digitalWrite(DI3,HIGH);
+                   temp=analogRead(NTC);
+                   Serial.println(temp);
+                   while (digitalRead (botao) == HIGH) 
+                    {   
+                
+                  
+                        liga=0;  // DESLIGA TUDO
+                        Serial.println("desliga");
                         
+                    }
                         
-                          digitalWrite(DI3,HIGH);
+               }
                         
-                        
-                        }
-                        
-                       digitalWrite(DI3,LOW);
+               digitalWrite(DI3,LOW);
 
                         
-                       if(temp>100){
+               if (temp>=219){
 
+                   while (digitalRead (botao) == HIGH) 
+                   {   
+                
+                
+                      liga=0;  // DESLIGA TUDO
+                      Serial.println("desliga");
+                      
+                   }
+                  digitalWrite(aquecimento,HIGH); 
+                  temp=analogRead(NTC) ;
 
-                         digitalWrite(DI2,HIGH);
-                         digitalWrite(DI3,HIGH);
-                         delay(15000);
-                         digitalWrite(DI2,LOW);
-                         digitalWrite(DI3,LOW);
-                         liga=0;
-
+                  digitalWrite(DI2,HIGH);
+                  digitalWrite(DI3,HIGH);
+                  delay(15000); //
+                  digitalWrite(DI2,LOW);
+                  digitalWrite(DI3,LOW);
+                  liga=0;
+                  Serial.println(temp);
                             
-                        } // 100ºC
+                } // 100ºC
                         
-                } // else
                 
-                
+               
                 
        } // liga
               
@@ -123,7 +154,7 @@ void loop() {
         
         
         
-        */
+        
         
         
         
