@@ -19,14 +19,14 @@ int temp;
 #define DI1 52// 300 RPM
 
 //Relé DI2
-#define DI2  48//800 RPM
+#define DI3  48//800 RPM
 
 //Relé DI3
-#define DI3 38 // 1500 RPM
+#define DI4 38 // 1500 RPM
 
 int liga=0;
 /*
-   ///////////////   DI2*DI3 = 2100 RPM /////////////
+   ///////////////   DI3*DI4 = 2100 RPM /////////////
 */
 
 
@@ -129,27 +129,27 @@ void loop() {
 
                 if (temp>=219){
 
-                 if (digitalRead(botao) == HIGH){  
-                     delay(300);
-                     while (digitalRead (botao) == HIGH) 
-                       {   
+                       if (digitalRead(botao) == HIGH){  
+                           delay(300);
+                           while (digitalRead (botao) == HIGH) 
+                             {   
 
 
-                          liga=0;  // DESLIGA TUDO
-                          Serial.println("desliga");
+                                liga=0;  // DESLIGA TUDO
+                                Serial.println("desliga");
 
+                             }
                        }
-                 }
-                  digitalWrite(aquecimento,HIGH); 
-                  temp=analogRead(NTC) ;
+                        digitalWrite(aquecimento,HIGH); 
+                        temp=analogRead(NTC) ;
 
-                  digitalWrite(DI3,HIGH);
-                  digitalWrite(DI4,HIGH);
-                  delay(15000); //
-                  digitalWrite(DI3,LOW);
-                  digitalWrite(DI4,LOW);
-                  liga=0;
-                  Serial.println(temp);
+                        digitalWrite(DI3,HIGH);
+                        digitalWrite(DI4,HIGH);
+                        delay(15000); //
+                        digitalWrite(DI3,LOW);
+                        digitalWrite(DI4,LOW);
+                        liga=0;
+                        Serial.println(temp);
 
                 } // 100ºC
 
