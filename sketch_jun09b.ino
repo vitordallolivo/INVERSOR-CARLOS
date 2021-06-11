@@ -104,22 +104,22 @@ void loop() {
 
                 if (temp>=175  && temp<219)
                {
-                   digitalWrite(DI3,LOW);
-                   digitalWrite(aquecimento,HIGH);  
-                   Serial.println(temp);
-                   digitalWrite(DI4,HIGH);
-                   temp=analogRead(NTC);
-                   Serial.println(temp);
-                   if (digitalRead(botao) == HIGH){  
-                     delay(300);
-                     while (digitalRead (botao) == HIGH) 
-                       {   
-
-
-                          liga=0;  // DESLIGA TUDO
-                          Serial.println("desliga");
-
-                       }
+                     digitalWrite(DI3,LOW);
+                     digitalWrite(aquecimento,HIGH);  
+                     Serial.println(temp);
+                     digitalWrite(DI4,HIGH);
+                     temp=analogRead(NTC);
+                     Serial.println(temp);
+                     if (digitalRead(botao) == HIGH){  
+                       delay(300);
+                       while (digitalRead (botao) == HIGH) 
+                         {   
+  
+  
+                            liga=0;  // DESLIGA TUDO
+                            Serial.println("desliga");
+  
+                         }
                     }
 
                }
