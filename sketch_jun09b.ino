@@ -5,7 +5,7 @@
 #define NTC A0
 
 int temp;
-
+char letra; // variavel do bluetooth
 
 // botão de inicio e parada
 #define botao 13
@@ -63,7 +63,79 @@ void loop() {
 
         }
 
+      if(Serial.available()> 0 ) {
+        
+          letra = Serial.read();
+         
+          if ((letra == 'z') || (letra == 'Z')) {
+            
+                  digitalWrite(DI1,LOW);
+                  digitalWrite(DI3,LOW);
+                  digitalWrite(DI4,LOW);
+            
+            }
+            
+          if ((letra == 'a') || (letra='A')) { // 
 
+
+                digitalWrite(DI1,HIGH); // 300 rpm
+                digitalWrite(DI3,LOW);
+                digitalWrite(DI4,LOW);
+            
+            
+            
+            
+            }
+         else{
+          
+            if ((letra == 'b')|| (letra == 'B')) {
+              
+              
+              digitalWrite(DI1,HIGH);
+              digitalWrite(DI3,HIGH); // 800 rpm
+              digitalWrite(DI4,LOW);
+              
+              
+              
+              }
+             else {
+              
+                  if ((letra =='c') || (letra == 'B') ){
+                    
+                      digitalWrite(DI1,HIGH);
+                      digitalWrite(DI3,LOW);
+                      digitalWrite(DI4,HIGH); // 1500 rpm
+                    
+                    
+                    }
+                    else{ 
+                      
+                      if ((letra=='d') || (letra == 'D')) {
+                        
+                             digitalWrite(DI1,HIGH);
+                             digitalWrite(DI3,HIGH);
+                             digitalWrite(DI4,HIGH); // 2100 rpm
+                        
+                        
+                        
+                        }
+                    
+                    
+                    
+                    }
+              
+              }
+          
+          }
+        
+        
+        
+        
+        
+        
+        
+        
+        }
 
       while(liga == 1)
       {  
@@ -82,7 +154,7 @@ void loop() {
 
               if (temp>=154  && temp<175)
               {
-                      Serial.println(temp);
+                      Serial.println("50ºC");
                       digitalWrite(aquecimento,HIGH); 
                       digitalWrite(DI3,HIGH);
                       Serial.println("estágio dos 50");
@@ -106,7 +178,7 @@ void loop() {
                {
                      digitalWrite(DI3,LOW);
                      digitalWrite(aquecimento,HIGH);  
-                     Serial.println(temp);
+                     Serial.println("75ºC");
                      digitalWrite(DI4,HIGH);
                      temp=analogRead(NTC);
                      Serial.println(temp);
@@ -142,14 +214,14 @@ void loop() {
                        }
                         digitalWrite(aquecimento,HIGH); 
                         temp=analogRead(NTC) ;
-
+                        Serial.println("100ºC");
                         digitalWrite(DI3,HIGH);
                         digitalWrite(DI4,HIGH);
                         delay(15000); //
                         digitalWrite(DI3,LOW);
                         digitalWrite(DI4,LOW);
                         liga=0;
-                        Serial.println(temp);
+                        
 
                 } // 100ºC
 
