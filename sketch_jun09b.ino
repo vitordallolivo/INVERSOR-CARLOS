@@ -6,6 +6,8 @@
 
 int temp;
 char letra; // variavel do bluetooth
+#include "SoftwareSerial.h"
+SoftwareSerial MyBlue(0, 1);// RX | TX
 
 // botão de inicio e parada
 #define botao 13
@@ -26,7 +28,7 @@ char letra; // variavel do bluetooth
 
 int liga=0;
 /*
-   ///////////////   DI3*DI4 = 2100 RPM /////////////
+   ///////////////   DI3*DI4 = 2100 RPM /////////////                                         
 */
 
 
@@ -63,13 +65,12 @@ void loop() {
 
         }
 
-      if(Serial.available()> 0 ) {
-        
           letra = Serial.read();
          
           if ((letra == 'z') || (letra == 'Z')) {
             
-                  digitalWrite(DI1,LOW);
+                  digitalWrite(DI1,LOW);  
+                  Serial.println("off");
                   digitalWrite(DI3,LOW);
                   digitalWrite(DI4,LOW);
             
@@ -83,18 +84,16 @@ void loop() {
                 digitalWrite(DI4,LOW);
             
             
-            
-            
             }
          else{
           
             if ((letra == 'b')|| (letra == 'B')) {
               
               
-              digitalWrite(DI1,HIGH);
-              digitalWrite(DI3,HIGH); // 800 rpm
-              digitalWrite(DI4,LOW);
-              
+                digitalWrite(DI1,HIGH);
+                digitalWrite(DI3,HIGH); // 800 rpm
+                digitalWrite(DI4,LOW);
+                
               
               
               }
@@ -127,15 +126,7 @@ void loop() {
               }
           
           }
-        
-        
-        
-        
-        
-        
-        
-        
-        }
+     
 
       while(liga == 1)
       {  
