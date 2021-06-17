@@ -99,7 +99,7 @@ void loop() {
               }
              else {
               
-                  if ((letra =='c') || (letra == 'B') ){
+                  if ((letra =='c') || (letra == 'C') ){
                     
                       digitalWrite(DI1,HIGH);
                       digitalWrite(DI3,LOW);
