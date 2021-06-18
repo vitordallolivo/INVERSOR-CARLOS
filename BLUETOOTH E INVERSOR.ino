@@ -16,7 +16,7 @@ SoftwareSerial MyBlue(0, 1);// RX | TX
 #define botao 13
 // resistor de aquecimento
 #define aquecimento 22 
-//resistor leitor do aquecimento
+//resistor do aquecimento
 
 
 
