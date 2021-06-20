@@ -53,7 +53,13 @@ int temperatura(int T){
 void bluetooth(){
   
          letra = Serial.read();
-
+         
+         if (letra>='A' && letra<='Z'){
+         
+            letra= letra+32;
+         
+         }
+   
          switch (letra){
 
              
