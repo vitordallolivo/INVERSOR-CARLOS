@@ -32,14 +32,14 @@ void loop(){
         if(letra == 'a'){
     
             Serial.println("LIGOU");
-            digitalWrite(aquecimento,HIGH); // 300 rpm
+            digitalWrite(aquecimento,HIGH); 
 
                 
         }
               
         if(letra == 'b'){
                   
-            digitalWrite(DI1,HIGH); // 800 rpm
+            digitalWrite(DI1,HIGH); 
                     
                   
         }
@@ -50,7 +50,7 @@ void loop(){
         }    
         if( letra == 'd') {
                             
-            digitalWrite(DI4,HIGH); // 2100 rpm
+            digitalWrite(DI4,HIGH); 
                                             
         } 
 
@@ -60,7 +60,7 @@ void loop(){
                   digitalWrite(aquecimento,LOW);
                   digitalWrite(DI1,LOW);
                   digitalWrite(DI3,LOW);
-                  digitalWrite(DI4,LOW); // 2100 rpm
+                  digitalWrite(DI4,LOW); 
           
           }
   
