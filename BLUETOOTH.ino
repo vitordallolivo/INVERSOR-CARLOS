@@ -11,62 +11,72 @@ char letra; // variavel do bluetooth
 //resistor do aquecimento
 
 void setup() {
-  // put your setup code here, to run once:
+  
     Serial.begin(9600);
+    
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-    bluetooth();
-}
-
-
-void bluetooth(){
+void loop(){
+  
   
          letra = Serial.read();
          Serial.println(letra);
-         delay(300);
          if (letra>='A' && letra<='Z'){
          
             letra= letra+32;
          
          }
    
+         switch (letra){
          
-             
-        if(letra == 'a'){
+         
+            case 'a':
     
-    
-            digitalWrite(aquecimento,HIGH); // 300 rpm
-
-                
-        }
-              
-        if(letra == 'b'){
-                  
-            digitalWrite(DI1,HIGH); // 800 rpm
+                  digitalWrite(aquecimento,HIGH); // 300 rpm
+  
+            case 'b':
+                              
+                   digitalWrite(DI1,HIGH); // 800 rpm
                     
                   
-        }
-        if(letra == 'c'){
+            case 'c':
                         
-            digitalWrite(DI3,HIGH); 
+                  digitalWrite(DI3,HIGH); 
                         
-        }    
-        if( letra == 'd') {
-                            
-            digitalWrite(DI4,HIGH); // 2100 rpm
-                                            
-        } 
 
-        
-         if (letra == 'z'){
-                  Serial.println(letra);
-                  digitalWrite(aquecimento,LOW);
-                  digitalWrite(DI1,LOW);
-                  digitalWrite(DI3,LOW);
-                  digitalWrite(DI4,LOW); // 2100 rpm
-          
+            case 'd':
+                            
+                  digitalWrite(DI4,HIGH); // 2100 rpm
+                                            
+
+            case 'e':
+              
+                 digitalWrite(aquecimento,LOW);
+            
+            case 'f':
+              
+                 digitalWrite(DI1,LOW);
+
+            case 'g':
+              
+                digitalWrite(DI3,LOW);
+
+            case 'h':
+              
+                digitalWrite(DI4,LOW);
+
+            case 'z':
+            
+                Serial.println(letra);
+                digitalWrite(aquecimento,LOW);
+                digitalWrite(DI1,LOW);
+                digitalWrite(DI3,LOW);
+                digitalWrite(DI4,LOW); // 2100 rpm
+
+            
+           default:
+                break;
+
           }
   
   
