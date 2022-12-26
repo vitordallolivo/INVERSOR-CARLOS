@@ -1,15 +1,17 @@
-// ESSE CODIGO ESTÁ DEFASADO, DEVERIA SER USADO ATTACHINTERRUPT PARA LIGAR E DESLIGAR 
+/* ALTERAÇÃO A SER FEITA:
+
+  MELHORAR METODO DE LEITURA DAS TEMPERATURAS USANDO O MAP DO PRÓPRIO ARDUINO
+
+*/
 
 
-// THEMOSISTOR
+#define NTC A0 // TEMPERATURA POR MEIO DA RESISTÊNCIA
 
-#define NTC A0
-
-int temp;
+int temp; // TEMPERATURA
 
 
 // botão de inicio e parada
-#define botao 13
+#define botao 2
 // resistor de aquecimento
 #define aquecimento 22 
 //resistor do aquecimento
@@ -38,138 +40,76 @@ void setup() {
       pinMode(DI1,OUTPUT);
       pinMode(DI3,OUTPUT);
       pinMode(DI4,OUTPUT);
+      attachInterrupt(digitalPinToInterrupt(botao),ligadesliga, RISING);
+}
+
+void ligadesliga(){ // verifica se o botão foi acionado durante o processo
+  
+      if(ligar==1){
+        
+        ligar=0;
+        // desliga todos os processos
+        digitalWrite(DI1,LOW);
+        digitalWrite(aquecimento,LOW);  
+        digitalWrite(DI3,LOW);
+        digitalWrite(DI4,LOW);
+  
+      }
+  
+      else{ 
+        ligar=1;    
+      }
 }
 
 void loop() {
-
-      temp=analogRead(NTC) ;
-      
-
-      while (digitalRead(botao) == HIGH ) 
-      {
-
-              liga=1;
-             // Serial.println("liga");
-
-        }
-
+      while(liga == 1){ // caso o botão tenha cido
+        temp=analogRead(NTC);
+        
+        if(temp>=240){
+    
+            Serial.println("Temperatura muito alta, espere o maquinario desaquecer");
           
-     
+        }
+        else{
+    
+          digitalWrite(aquecimento,HIGH); // aqueciment liga
+          digitalWrite(DI1,HIGH); // /RPM de 300 começa
+        
+        }
+        
+        if (temp>=154  && temp<175){
+            Serial.println("50ºC");
+            digitalWrite(aquecimento,HIGH); 
+            digitalWrite(DI3,HIGH);
+            Serial.println("Estágio dos 50ºC");
+            temp=analogRead(NTC) ;
+                
 
-      while(liga == 1)
-      {  
-             // Serial.println("liga");
-              digitalWrite(aquecimento,HIGH); // aqueciment liga 
-              digitalWrite(DI1,HIGH); // /RPM de 300 começa
+        } // 50ºC a 75ºC
 
-              temp=analogRead(NTC) ;
-  
-             
+        if (temp>=175  && temp<219){
+          
+              digitalWrite(DI3,LOW);
+              digitalWrite(aquecimento,HIGH);  
+              Serial.println("75ºC");
+              Serial.println("Estágio 75ºC");
+              digitalWrite(DI4,HIGH);
+          
+        } // 75ºC a 100ºC
 
-              if (temp>=154  && temp<175)
-              {
-                      Serial.println("50ºC");
-                      digitalWrite(aquecimento,HIGH); 
-                      digitalWrite(DI3,HIGH);
-                      Serial.println("Estágio dos 50ºC");
-                      temp=analogRead(NTC) ;
-                      
-                      
-                      
-                     if (digitalRead(botao) == HIGH){  
-                       delay(300);
-                       while (digitalRead (botao) == HIGH) 
-                         {   
-                                digitalWrite(DI1,LOW);
-                                digitalWrite(aquecimento,LOW);  
-                                digitalWrite(DI3,LOW);
-                                digitalWrite(DI4,LOW);
-                                liga=0;  // DESLIGA TUDO
-                                Serial.println("desliga");
-
-                       }
-                 }
-
-              } // 50ºC a 75ºC
-
-               
-
-                if (temp>=175  && temp<219)
-               {
-                     digitalWrite(DI3,LOW);
-                     digitalWrite(aquecimento,HIGH);  
-                     Serial.println("75ºC");
-                     Serial.println("Estágio 75ºC");
-                     digitalWrite(DI4,HIGH);
-                     temp=analogRead(NTC);
-                     
-                     
-                     
-                     if (digitalRead(botao) == HIGH){  
-                       delay(300);
-                       while (digitalRead (botao) == HIGH) 
-                         {   
-  
-                            digitalWrite(DI1,LOW);
-                            digitalWrite(aquecimento,LOW);  
-                            digitalWrite(DI3,LOW);
-                            digitalWrite(DI4,LOW);
-                            liga=0;  // DESLIGA TUDO
-                            Serial.println("desliga");
-  
-                         }
-                    }
-
-               }
-
-              
-
-
-                if (temp>=240){
-
-                       if (digitalRead(botao) == HIGH){  
-                           delay(300);
-                           while (digitalRead (botao) == HIGH) 
-                             {   
-
-                                digitalWrite(DI1,LOW);
-                                digitalWrite(aquecimento,LOW);  
-                                digitalWrite(DI3,LOW);
-                                digitalWrite(DI4,LOW);
-                                liga=0;  // DESLIGA TUDO
-                                Serial.println("desliga");
-
-                             }
-                       }
-                        Serial.println("100ºC");
-                        Serial.println("Estágio final")
-                        digitalWrite(aquecimento,HIGH); 
-                        temp=analogRead(NTC) ;
+       if (temp>=240){
+              Serial.println("100ºC");
+              Serial.println("Estágio final")
+              digitalWrite(aquecimento,HIGH);     
+              digitalWrite(DI3,HIGH);
+              digitalWrite(DI4,HIGH);
+              delay(15000); // Espera um intervalor de 15 segundos pre-estabelicido
+              digitalWrite(DI1,LOW);
+              digitalWrite(aquecimento,LOW);  
+              digitalWrite(DI3,LOW);
+              digitalWrite(DI4,LOW);
+              liga=0;
                         
-                        digitalWrite(DI3,HIGH);
-                        digitalWrite(DI4,HIGH);
-                        delay(15000); //
-
-                        digitalWrite(DI1,LOW);
-                        digitalWrite(aquecimento,LOW);  
-                        digitalWrite(DI3,LOW);
-                        digitalWrite(DI4,LOW);
-                        liga=0;
-                        
-
-                } // 100ºC
-
-
-
-
+          } // 100ºC
        } // liga
-
-
-
-
-
-
-
-
-
-} // Tudo dentro disso
+} //VOIDLOOP
