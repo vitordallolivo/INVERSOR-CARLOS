@@ -9,7 +9,6 @@
 
 int temp; // TEMPERATURA
 
-
 // botão de inicio e parada
 #define botao 2
 // resistor de aquecimento
@@ -33,7 +32,6 @@ void setup() {
 
      Serial.begin(9600);
 
-
       pinMode(botao,INPUT);
       pinMode(NTC,INPUT); // input analogico
       pinMode(aquecimento,OUTPUT);
@@ -45,8 +43,7 @@ void setup() {
 
 void ligadesliga(){ // verifica se o botão foi acionado durante o processo
   
-      if(ligar==1){
-        
+      if(ligar){
         ligar=0;
         // desliga todos os processos
         digitalWrite(DI1,LOW);
@@ -55,26 +52,20 @@ void ligadesliga(){ // verifica se o botão foi acionado durante o processo
         digitalWrite(DI4,LOW);
   
       }
-  
       else{ 
         ligar=1;    
       }
 }
 
 void loop() {
-      while(liga == 1){ // caso o botão tenha cido
+      while(ligar){ // caso o botão tenha sido acionado
         temp=analogRead(NTC);
-        
         if(temp>=240){
-    
             Serial.println("Temperatura muito alta, espere o maquinario desaquecer");
-          
         }
         else{
-    
           digitalWrite(aquecimento,HIGH); // aqueciment liga
           digitalWrite(DI1,HIGH); // /RPM de 300 começa
-        
         }
         
         if (temp>=154  && temp<175){
@@ -88,13 +79,11 @@ void loop() {
         } // 50ºC a 75ºC
 
         if (temp>=175  && temp<219){
-          
               digitalWrite(DI3,LOW);
               digitalWrite(aquecimento,HIGH);  
               Serial.println("75ºC");
               Serial.println("Estágio 75ºC");
               digitalWrite(DI4,HIGH);
-          
         } // 75ºC a 100ºC
 
        if (temp>=240){
